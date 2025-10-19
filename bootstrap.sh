@@ -1,3 +1,3 @@
 #!/bin/bash
 
-helm install todoapp helm-chart/todoapp
+helm install todoapp .infrastructure/helm-chart/todoapp
