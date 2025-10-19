@@ -19,7 +19,7 @@ spec:
     spec:
       serviceAccountName: {{ .Values.todoapp.serviceAccount.name }}
       containers:
-      - name: todoapp
+      - name: {{ .Chart.Name }}
         image: {{ .Values.todoapp.deployment.image.repository }}:{{ .Values.todoapp.deployment.image.tag }}
         volumeMounts:
         - name: data
@@ -47,7 +47,7 @@ spec:
         - name: {{ $key }}
           valueFrom:
             secretKeyRef:
-              name: app-secret
+              name: {{ $.Chart.Name }}-secret
               key: {{ $key }}
         {{- end }}
         ports:
@@ -68,12 +68,12 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: pvc-data
-      - name: app-secrets-volume
+      - name: {{ .Chart.Name }}-secrets-volume
         secret:
-          secretName: app-secret
-      - name: app-config-volume
+          secretName: {{ .Chart.Name }}-secret
+      - name: {{ .Chart.Name }}-config-volume
         configMap:
-          name: app-config
+          name: {{ .Chart.Name }}-config
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
